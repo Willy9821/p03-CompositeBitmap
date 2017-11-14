@@ -9,9 +9,9 @@ using namespace std;
 const int MAX_FILENAME = 10;
 bool validBmp;
 int row, column, depth;
-string fileName;
+string fileName, Images;
 
-void validImg(string &);
+vector< vector<Pixel> > validImg(string);
 void printRGB(int,int,int);
 
 int main()
@@ -22,7 +22,7 @@ int main()
                 cout<<"Please enter a proper bmp file(max of 10), type done when finished."<<endl;
                 cin>>fileName;         
                 
-                validImg(fileName);  
+                validImg(Images);  
               
                 printRGB(row,column,depth);
         }
@@ -30,7 +30,7 @@ int main()
 
         return 0;
 } 
-void validImg(string& fileName)
+vector< vector<Pixel> > validImg(string Images)
 {
         Bitmap image;
         vector< vector <Pixel> >bmp;
@@ -53,8 +53,8 @@ void printRGB(Bitmap img, int r, int c, int d)
         double average, sumRed, sumGreen, sumBlue;
         Bitmap image;
         Pixel rgb;
-        vector< vector < vector<Pixel> > >bmp;
-        bmp = img.fromPixelMatrix();
+        vector< vector< vector<Pixel> > >bmp;
+        image.toPixelMatrix(bmp);
 
         for(int r = 0; r < bmp.size(); r++)
         {
@@ -67,17 +67,16 @@ void printRGB(Bitmap img, int r, int c, int d)
 
                         for(int d = 0; d < bmp[r][c].size(); d++)
                         {
-                                rgb = bmp[r][c];
+                                rgb = bmp[r][c][d];
                                 sumRed = rgb.red + sumRed;
                                 sumGreen = rgb.green + sumGreen;;
                                 sumBlue = rgb.blue + sumBlue;
-                                bmp[r][c] = rgb;
+                                bmp[r][c][d] = rgb;
                         }
-                        rgb = bmp[r][c];
                         average = (sumRed + sumGreen + sumBlue) / bmp.size();
-                        bmp[r][c] = rgb;
                 }
+                image.fromPixelMatrix(bmp);
                 image.save("composite-wiparraguirre.bmp");
         }
-        return = average;      
+        return = vector< vector< vector<Pixel> > >bmp ;      
 }        
