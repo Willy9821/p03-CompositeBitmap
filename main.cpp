@@ -11,7 +11,8 @@ bool validBmp;
 int row, column, depth;
 string fileName;
 
-void printRGB(Bitmap,int,int,int);
+void validImg(string &);
+void printRGB(int,int,int);
 
 int main()
 {
@@ -19,38 +20,33 @@ int main()
         do
         {      
                 cout<<"Please enter a proper bmp file(max of 10), type done when finished."<<endl;
-                cin>>fileName;
-          
-                Bitmap image;
-                vector< vector <Pixel> > bmp;
-                Pixel rgb;
+                cin>>fileName;         
+                
+                validImg(fileName);  
               
-                //Check to see whether or not each file is a bmp format, and if they are all the same size.
-                image.open(fileName);
-                validBmp = image.isImage();
-
-                if(validBmp == true)
-                { 
-                        bmp = image.toPixelMatrix();
-                        //Print the matrix of the bmp if it is in proper format, this can be a function.
-                        printRGB(image,row,column,depth);
-                }
-                //Print error if all the images aren't the same size and if they aren't propper bmp format, or the user has submitted more than 10 files.
-                else
-                {
-                        cout<<"One or more of the files were NOT proper bmp formati, OR they weren't all the same size."<<endl;
-                }
+                printRGB(row,column,depth);
         }
         while(fileName == "done" || fileName == "Done" || fileName == "DONE" && validBmp == false);
 
         return 0;
 } 
-//Combine the valid images together to create a single composite image, this can be done in a function.
-//As the images are being loaded notify the user an occasional progression report.
-//Function for printing the matrix of the bmp and finding the average of each pixel.
-vector< vector< vector<Pixel> > > validImg(Bitmap img, int x, int y)
+void validImg(string& fileName)
 {
-  
+        Bitmap image;
+        vector< vector <Pixel> >bmp;
+        Pixel rgb;
+
+        image.open(fileName);
+        validBmp = image.isImage();
+
+        if(validBmp == true)
+        {
+                bmp = image.toPixelMatrix();
+        }
+        else
+        {
+                cout<<"One or more of the files were NOT proper bmp format, OR they weren't all the same size."<<endl;
+        } 
 }
 void printRGB(Bitmap img, int r, int c, int d)
 {
@@ -58,7 +54,7 @@ void printRGB(Bitmap img, int r, int c, int d)
         Bitmap image;
         Pixel rgb;
         vector< vector < vector<Pixel> > >bmp;
-        bmp = img.toPixelMatrix();
+        bmp = img.fromPixelMatrix();
 
         for(int r = 0; r < bmp.size(); r++)
         {
@@ -81,7 +77,7 @@ void printRGB(Bitmap img, int r, int c, int d)
                         average = (sumRed + sumGreen + sumBlue) / bmp.size();
                         bmp[r][c] = rgb;
                 }
-              image.fromPixelMatrix(bmp);
-              image.save("composite-wiparraguirre.bmp");
+                image.save("composite-wiparraguirre.bmp");
         }
+        return = average;      
 }        
